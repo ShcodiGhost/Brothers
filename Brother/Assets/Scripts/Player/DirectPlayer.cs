@@ -1,22 +1,30 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class DirectPlayer
+public class DirecterPlayer
 {
-    private float _sensitivity;
+    private float _sensitivity = 1f;
 
     private Transform _playerHead;
     private Transform _playerBody;
-
-    public DirectPlayer(Transform playerHead, Transform playerBody, PlayerInput input)
+    
+    public DirecterPlayer(Transform playerHead, Transform playerBody, PlayerInput input)
     {
         _playerHead = playerHead;
         _playerBody = playerBody;
 
-        input.Player.MouseDelta.performed += CameraLookAt;
+        input.Player.MouseDelta.performed += DirectPlayer;
     }
 
-    private void CameraLookAt(InputAction.CallbackContext callback)
+    public void SetSensitivity(float newSensitivity)
+    {
+        if (newSensitivity <= 0)
+            throw new Exception("Sensitivity cannot be changed to negative!");
+
+        _sensitivity = newSensitivity;
+    }
+    private void DirectPlayer(InputAction.CallbackContext callback)
     {
         Vector2 MouseDelta = callback.ReadValue<Vector2>();
 

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows;
 
-[RequireComponent(typeof(CharacterController), typeof(IPhysically))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement
 {
     [SerializeField][Min(0.01f)] private float _speed;
 
@@ -12,18 +11,25 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController _controller;
     private IPhysically _physically;
 
+    public PlayerMovement(float speed, PlayerInput input, CharacterController controller, IPhysically physically)
+    {
+        
+        input 
+
+        _controller = controller;
+        _physically = physically;
+    }
+
     private void Awake() => _input = new PlayerInput();
     private void Start()
     {
         _controller = GetComponent<CharacterController>();
         _physically = GetComponent<IPhysically>();
-        _input.Enable();
     }
 
     private void FixedUpdate()
     {
         Move(_input.Player.Move.ReadValue<Vector2>().normalized);
-        Debug.Log(_input.Player.Move.ReadValue<Vector2>().normalized);
     }
 
 

@@ -1,28 +1,19 @@
-using UnityEngine;
+using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(IPhysically))]
-public class PlayerJump : MonoBehaviour
+public class PlayerJump
 {
-    [SerializeField][Min(0.01f)] private float _jumpForce;
-
-    private PlayerInput _input;
+    private float _jumpForce;
     private IPhysically _physicsPlayer;
-    private DirectPlayer _playerCamera;
 
-    private void Awake()
+    public PlayerJump(float jumpForce, IPhysically physics, PlayerInput input)
     {
-        _input = new PlayerInput();
+        _jumpForce = jumpForce;
+        _physicsPlayer = physics;
 
-        _input.Player.Jump.performed += context => Jump();
+        input.Player.Jump.performed += Jump;
     }
 
-    private void Start()
-    {
-        _physicsPlayer = GetComponent<IPhysically>();
-        _input.Enable();
-    }
-
-    private void Jump()
+    private void Jump(InputAction.CallbackContext callback)
     {
         if (_physicsPlayer?.IsGrounded ?? false)
             _physicsPlayer.Velocity = _jumpForce;
