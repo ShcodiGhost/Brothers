@@ -7,7 +7,7 @@ public class PlayerJump : MonoBehaviour
 
     private PlayerInput _input;
     private IPhysically _physicsPlayer;
-    private PlayerCamera _playerCamera;
+    private DirectPlayer _playerCamera;
 
     private void Awake()
     {
