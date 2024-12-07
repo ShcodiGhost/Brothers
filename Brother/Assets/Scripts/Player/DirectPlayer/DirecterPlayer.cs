@@ -9,12 +9,12 @@ public class DirecterPlayer
     private Transform _playerHead;
     private Transform _playerBody;
     
-    public DirecterPlayer(Transform playerHead, Transform playerBody, PlayerInput input)
+    public DirecterPlayer(DirectPlayerConfig playerConfig, PlayerInput input)
     {
-        _playerHead = playerHead;
-        _playerBody = playerBody;
+        _playerHead = playerConfig.PlayerHead;
+        _playerBody = playerConfig.PlayerBody;
 
-        input.Player.MouseDelta.performed += DirectPlayer;
+        input.Mouse.MouseDelta.performed += DirectPlayer;
     }
 
     public void SetSensitivity(float newSensitivity)
@@ -24,11 +24,12 @@ public class DirecterPlayer
 
         _sensitivity = newSensitivity;
     }
+
     private void DirectPlayer(InputAction.CallbackContext callback)
     {
         Vector2 MouseDelta = callback.ReadValue<Vector2>();
 
-        Vector3 HeadRotation = Vector3.forward * MouseDelta.y;
+        Vector3 HeadRotation = Vector3.right * -MouseDelta.y;
         Vector3 BodyRotation = Vector3.up * MouseDelta.x;
 
         _playerBody.Rotate(BodyRotation * _sensitivity);
