@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.Windows;
 
 [RequireComponent(typeof(IPhysically))]
 public class PlayerJump : MonoBehaviour
@@ -9,16 +7,20 @@ public class PlayerJump : MonoBehaviour
 
     private PlayerInput _input;
     private IPhysically _physicsPlayer;
+    private PlayerCamera _playerCamera;
 
     private void Awake()
     {
         _input = new PlayerInput();
+
         _input.Player.Jump.performed += context => Jump();
     }
 
-    private void OnEnable() => _input.Enable();
-    private void Start() => _physicsPlayer = GetComponent<IPhysically>();
-    private void OnDisable() => _input.Enable();
+    private void Start()
+    {
+        _physicsPlayer = GetComponent<IPhysically>();
+        _input.Enable();
+    }
 
     private void Jump()
     {

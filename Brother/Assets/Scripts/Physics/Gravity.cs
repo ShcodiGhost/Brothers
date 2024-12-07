@@ -30,7 +30,7 @@ public class Gravity : MonoBehaviour, IPhysically
 
         DoGravity();
 
-        if (isGrounded == true)
+        if (isGrounded == true && _velocity < _defaultVelocity)
             _velocity = _defaultVelocity;
     }
     private void DoGravity()
