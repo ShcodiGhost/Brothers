@@ -10,10 +10,10 @@ public class PlayerJump
         _jumpForce = jumpForce;
         _physicsPlayer = physics;
 
-        input.PlayerMovement.Jump.performed += Jump;
+        input.PlayerMovement.Jump.performed += _ => Jump();
     }
 
-    private void Jump(InputAction.CallbackContext callback)
+    private void Jump()
     {
         if (_physicsPlayer?.IsGrounded ?? false)
             _physicsPlayer.Velocity = _jumpForce;

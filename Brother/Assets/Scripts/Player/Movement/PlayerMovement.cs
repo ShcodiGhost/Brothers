@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 using UnityEngine.Windows;
 
 public class PlayerMovement
@@ -14,14 +15,18 @@ public class PlayerMovement
     private CharacterController _controller;
     private IPhysically _physically;
 
-    public PlayerMovement(float speed, PlayerInput input, CharacterController controller, IPhysically physically, Action fixedUpdate)
+    private Transform _playerTransform;
+
+    public PlayerMovement(float speed, PlayerInput input, CharacterController controller,
+        IPhysically physically, ref Action fixedUpdate)
     {
+
         SetSpeed(speed);
 
         _input = input;
         _controller = controller;
         _physically = physically;
-
+        _playerTransform = _controller.transform;
         fixedUpdate += Move;
     }
     public void SetSpeed(float newSpeed)
@@ -36,6 +41,8 @@ public class PlayerMovement
         Vector2 axisInput = _input.PlayerMovement.Move.ReadValue<Vector2>();
 
         Vector3 direction = new Vector3(axisInput.x, _physically.Velocity, axisInput.y);
-        _controller.Move(direction * _speed * Time.deltaTime);
+        Vector3 forward = new Vector3(_playerTransform.forward * axisInput.y,, );
+
+        _controller.Move(_speed * Time.fixedDeltaTime * forward);
     }
 }

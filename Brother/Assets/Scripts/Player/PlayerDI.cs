@@ -18,11 +18,25 @@ public class PlayerDI : MonoBehaviour
     private void OnEnable()
     {
         if (_isInstanse == false)
+        {
+            Init();
             return;
+        }
 
-        _input.Enable();
+        _input?.Enable();
     }
     private void Start()
+    {
+        Init();
+    }
+
+    private void OnDisable()
+    {
+        _input?.Disable();
+    }
+    private void FixedUpdate() => _fixedUpdate?.Invoke();
+
+    private void Init()
     {
         IPhysically playerPhysical = GetComponent<IPhysically>();
         CharacterController characterController = GetComponent<CharacterController>();
@@ -34,16 +48,11 @@ public class PlayerDI : MonoBehaviour
                                              _input,
                                              characterController,
                                              playerPhysical,
-                                             _fixedUpdate);
+                                             ref _fixedUpdate);
 
         _playerDirecter = new DirecterPlayer(_directPlayerConfig, _input);
 
         _isInstanse = true;
         _input.Enable();
     }
-    private void OnDisable()
-    {
-        _input.Disable();
-    }
-    private void FixedUpdate() => _fixedUpdate?.Invoke();
 }
